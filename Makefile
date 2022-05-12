@@ -14,21 +14,15 @@ docker-build:
 	@echo "\n📦 Building simple-kubernetes-webhook Docker image..."
 	docker build -t simple-kubernetes-webhook:latest .
 
-# From this point `kind` is required
-.PHONY: cluster
-cluster:
-	@echo "\n🔧 Creating Kubernetes cluster..."
-	kind create cluster --config dev/manifests/kind/kind.cluster.yaml
+.PHONY selfsigned-ca 
+selfsigned-ca:
+    @echo "\n📦 Creating cert-manager selfsigned CA"
+	k apply -f dev/manifests/cert-manager/selfsigned-ca.yaml
 
-.PHONY: delete-cluster
-delete-cluster:
-	@echo "\n♻️  Deleting Kubernetes cluster..."
-	kind delete cluster
-
-.PHONY: push
-push: docker-build
-	@echo "\n📦 Pushing admission-webhook image into Kind's Docker daemon..."
-	kind load docker-image simple-kubernetes-webhook:latest
+.PHONY delete-selfsigned-ca 
+delete-selfsigned-ca:
+    @echo "\n📦 Deleting cert-manager selfsigned CA"
+	k delete -f dev/manifests/cert-manager/selfsigned-ca.yaml
 
 .PHONY: deploy-config
 deploy-config:
