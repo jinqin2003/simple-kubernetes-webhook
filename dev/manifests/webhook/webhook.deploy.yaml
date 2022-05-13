@@ -20,8 +20,8 @@ spec:
           operator: Exists
           effect: NoSchedule
       containers:
-        - image: simple-kubernetes-webhook:latest
-          imagePullPolicy: Never
+        - image: jinqin2003/simple-kubernetes-webhook:blue
+          imagePullPolicy: Always
           name: simple-kubernetes-webhook
           env:
             - name: TLS

@@ -12,7 +12,8 @@ This project can fully run locally and includes automation to deploy a local Kub
 ### Requirements
 * Docker
 * kubectl
-* [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
+* [minikube](https://minikube.sigs.k8s.io/docs/start/)
+* [cert-manager](https://cert-manager.io/docs/installation/)
 * Go >=1.16 (optional)
 
 ## Usage

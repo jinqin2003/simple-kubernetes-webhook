@@ -14,15 +14,15 @@ docker-build:
 	@echo "\n📦 Building simple-kubernetes-webhook Docker image..."
 	docker build -t simple-kubernetes-webhook:latest .
 
-.PHONY selfsigned-ca 
-selfsigned-ca:
-    @echo "\n📦 Creating cert-manager selfsigned CA"
-	k apply -f dev/manifests/cert-manager/selfsigned-ca.yaml
+.PHONY: create-cert
+create-cert:
+	@echo "\n⚙️  Creating cert-manager selfsigned CA..."
+	kubectl apply -f dev/manifests/cert-manager/
 
-.PHONY delete-selfsigned-ca 
-delete-selfsigned-ca:
-    @echo "\n📦 Deleting cert-manager selfsigned CA"
-	k delete -f dev/manifests/cert-manager/selfsigned-ca.yaml
+.PHONY: delete-cert
+delete-cert:
+	@echo "\n⚙️  Deleting cert-manager selfsigned CA..."
+	kubectl delete -f dev/manifests/cert-manager/selfsigned-ca.yaml
 
 .PHONY: deploy-config
 deploy-config:
@@ -34,8 +34,20 @@ delete-config:
 	@echo "\n♻️  Deleting Kubernetes cluster config..."
 	kubectl delete -f dev/manifests/cluster-config/
 
+.PHONY: copy-secrets
+copy-secrets:
+	@echo "\n🚀 Copying secret simple-kubernetes-webhook-tls..."
+	kubectl get secret simple-kubernetes-webhook-tls --namespace cert-manager -oyaml | grep -v '^\s*namespace:\s' | kubectl apply --namespace default -f -
+	kubectl get secret simple-kubernetes-webhook-tls --namespace cert-manager -oyaml | grep -v '^\s*namespace:\s' | kubectl apply --namespace apps -f -
+
+.PHONY: delete-secrets
+delete-secrets:
+	@echo "\n🚀 Deleting secrets ..."
+	kubectl delete secret simple-kubernetes-webhook-tls --namespace default
+	kubectl delete secret simple-kubernetes-webhook-tls --namespace apps
+
 .PHONY: deploy
-deploy: push delete deploy-config
+deploy: deploy-config
 	@echo "\n🚀 Deploying simple-kubernetes-webhook..."
 	kubectl apply -f dev/manifests/webhook/
 
