@@ -20,7 +20,7 @@ spec:
           operator: Exists
           effect: NoSchedule
       containers:
-        - image: jinqin2003/simple-kubernetes-webhook:blue
+        - image: jinqin2003/simple-kubernetes-webhook
           imagePullPolicy: Always
           name: simple-kubernetes-webhook
           env:

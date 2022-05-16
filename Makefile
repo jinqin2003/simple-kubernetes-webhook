@@ -14,6 +14,12 @@ docker-build:
 	@echo "\n📦 Building simple-kubernetes-webhook Docker image..."
 	docker build -t simple-kubernetes-webhook:latest .
 
+.PHONY: docker-push
+docker-push:
+	@echo "\n📦 Pushing simple-kubernetes-webhook Docker image to hub.docker..."
+	docker tag simple-kubernetes-webhook docker.io/jinqin2003/simple-kubernetes-webhook
+	docker push jinqin2003/simple-kubernetes-webhook
+
 .PHONY: create-cert
 create-cert:
 	@echo "\n⚙️  Creating cert-manager selfsigned CA..."
