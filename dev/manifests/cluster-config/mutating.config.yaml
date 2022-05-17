@@ -3,7 +3,7 @@ kind: MutatingWebhookConfiguration
 metadata:
   name: "simple-kubernetes-webhook.acme.com"
   annotations:
-    cert-manager.io/inject-ca-from-secret: default/simple-kubernetes-webhook-tls
+    cert-manager.io/inject-ca-from: default/simple-kubernetes-webhook-tls
 webhooks:
   - name: simple-kubernetes-webhook.acme.com
     namespaceSelector:

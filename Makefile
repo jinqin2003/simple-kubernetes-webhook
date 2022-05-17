@@ -29,6 +29,8 @@ create-cert:
 delete-cert:
 	@echo "\n⚙️  Deleting cert-manager selfsigned CA..."
 	kubectl delete -f dev/manifests/cert-manager/selfsigned-ca.yaml
+	kubectl delete certificate simple-kubernetes-webhook-tls
+	kubectl delete secret simple-kubernetes-webhook-tls
 
 .PHONY: deploy-config
 deploy-config:
@@ -39,18 +41,6 @@ deploy-config:
 delete-config:
 	@echo "\n♻️  Deleting Kubernetes cluster config..."
 	kubectl delete -f dev/manifests/cluster-config/
-
-.PHONY: copy-secrets
-copy-secrets:
-	@echo "\n🚀 Copying secret simple-kubernetes-webhook-tls..."
-	kubectl get secret simple-kubernetes-webhook-tls --namespace cert-manager -oyaml | grep -v '^\s*namespace:\s' | kubectl apply --namespace default -f -
-	kubectl get secret simple-kubernetes-webhook-tls --namespace cert-manager -oyaml | grep -v '^\s*namespace:\s' | kubectl apply --namespace apps -f -
-
-.PHONY: delete-secrets
-delete-secrets:
-	@echo "\n🚀 Deleting secrets ..."
-	kubectl delete secret simple-kubernetes-webhook-tls --namespace default
-	kubectl delete secret simple-kubernetes-webhook-tls --namespace apps
 
 .PHONY: deploy
 deploy: deploy-config
@@ -93,4 +83,4 @@ logs:
 	kubectl logs -l app=simple-kubernetes-webhook -f
 
 .PHONY: delete-all
-delete-all: delete delete-config delete-pod delete-bad-pod
+delete-all: delete delete-config delete-cert delete-pod delete-bad-pod
