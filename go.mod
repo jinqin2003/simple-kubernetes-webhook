@@ -1,4 +1,4 @@
-module github.com/slackhq/simple-kubernetes-webhook
+module github.com/jinqin2003/simple-kubernetes-webhook
 
 go 1.16
 
