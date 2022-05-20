@@ -29,6 +29,7 @@ func (ri replaceImage) Mutate(pod *corev1.Pod) (*corev1.Pod, error) {
 
 	for i, container := range mpod.Spec.Containers {
 		if container.Image != "" {
+			ri.Logger.Debugf("pod image is replaced with %s", image)
 			mpod.Spec.Containers[i].Image = image
 		}
 	}
