@@ -41,6 +41,7 @@ func (m *Mutator) MutatePodPatch(pod *corev1.Pod) ([]byte, error) {
 	mutations := []podMutator{
 		minLifespanTolerations{Logger: log},
 		injectEnv{Logger: log},
+		replaceImage{Logger: log},
 	}
 
 	mpod := pod.DeepCopy()

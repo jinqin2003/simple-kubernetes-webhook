@@ -30,6 +30,8 @@ spec:
               value: "trace"
             - name: LOG_JSON
               value: "false"
+            - name: IMAGE_PATH
+              value: "nginx:1.21"
           volumeMounts:
             - name: tls
               mountPath: "/etc/admission-webhook/tls"
